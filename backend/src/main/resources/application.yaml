@@ -1,0 +1,21 @@
+#Configuración de spring
+spring:
+  application:
+    name: TuBolsillo
+
+# Configuración de la documentación
+springdoc:
+  swagger-ui:
+    path: /api/docs
+  api-docs:
+    path: /api/docs/api-docs
+
+# Configuración de JSON Web Token
+jwt:
+  secret: Yn8ycCmd0csc6RbloLo2URZy8Unu2Mtk1/KW4/0dtcQ=
+  refresh:
+    expiration: 604800000 # 7 días
+  access:
+    expiration: 3600000 # 1 hora = 3600 segundos * 1000 milisegundos/segundo
+
+
