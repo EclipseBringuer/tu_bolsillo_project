@@ -28,7 +28,9 @@ La estructura general del proyecto es la siguiente:
 │   ├── src/
 │   ├── package.json
 │   └── Dockerfile (Para el frontend)
+├── /docker-config (Para docker)
+│   └── /mysql
+│       └── init.sql
 ├── docker-compose.yml (Archivo central de orquestación)
-├── README.md (Documentación del proyecto)
-└── .gitignore
+└── README.md (Documentación del proyecto)
 ```
