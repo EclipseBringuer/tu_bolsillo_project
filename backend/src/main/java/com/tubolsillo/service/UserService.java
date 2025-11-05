@@ -1,0 +1,105 @@
+package com.tubolsillo.service;
+
+import com.tubolsillo.dto.UserDTO;
+import com.tubolsillo.entity.Role;
+import com.tubolsillo.entity.User;
+import com.tubolsillo.exception.custom.UserNotFoundException;
+import com.tubolsillo.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.List;
+
+/**
+ * Servicio con las funcionalidades relacionadas con la entidad User
+ */
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository userRepository;
+
+    /**
+     * Devuelve la información del usuario actual
+     *
+     * @return DTO de usuario con la información del usuario actual
+     */
+    public UserDTO getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmailAndDeletedAtIsNull(email).orElseThrow(UserNotFoundException::new);
+
+        return new UserDTO(
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getRoles().stream().map(Role::getName).toList()
+        );
+    }
+
+    /**
+     * Obtiene un usuario por su email
+     *
+     * @param email El email del usuario
+     * @return El usuario encontrado
+     */
+    public User findByEmail(String email) {
+        return userRepository.findByEmailAndDeletedAtIsNull(email).orElseThrow(UserNotFoundException::new);
+    }
+
+    /**
+     * Verifica si un usuario existe por su email
+     *
+     * @param email El email a verificar
+     * @return true si existe o false si no
+     */
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmailAndDeletedAtIsNull(email);
+    }
+
+    /**
+     * Obtiene un usuario activo por su ID
+     *
+     * @param id El identificador del usuario
+     * @return El usuario activo encontrado
+     */
+    public User findById(Long id) {
+        return userRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(UserNotFoundException::new);
+    }
+
+    /**
+     * Lista todos los usuarios que no han sido eliminados
+     *
+     * @return Lista de usuarios activos
+     */
+    public List<User> findAll() {
+        return userRepository.findAllByDeletedAtIsNull();
+    }
+
+    /**
+     * Elimina a un usuario de forma lógica
+     *
+     * @param id El ID del usuario
+     */
+    public void softDeleteUser(Long id) {
+        User user = findById(id); // Solo usuarios activos
+        user.setDeletedAt(Timestamp.from(Instant.now()));
+        userRepository.save(user);
+    }
+
+    /**
+     * Restaura un usuario eliminado lógicamente
+     *
+     * @param id El identificador del usuario
+     */
+    public void restoreUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        user.setDeletedAt(null);
+        userRepository.save(user);
+    }
+}
