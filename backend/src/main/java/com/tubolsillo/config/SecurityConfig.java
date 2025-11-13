@@ -38,6 +38,7 @@ public class SecurityConfig {
                         auth
                                 .requestMatchers(
                                         ApiRoutes.Auth.BASE + ApiRoutes.Auth.LOGIN,
+                                        ApiRoutes.Auth.BASE + ApiRoutes.Auth.REFRESH,
                                         ApiRoutes.API_DOCS,
                                         ApiRoutes.SWAGGER,
                                         ApiRoutes.DOCUMENTATION
