@@ -5,14 +5,12 @@ import com.tubolsillo.dto.AuthResponse;
 import com.tubolsillo.dto.LoginRequest;
 import com.tubolsillo.dto.RefreshRequest;
 import com.tubolsillo.dto.RegisterRequest;
+import com.tubolsillo.security.jwt.JwtUtils;
 import com.tubolsillo.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Controlador que se encarga de la autorización de usuarios
@@ -26,6 +24,8 @@ public class AuthController {
      * Servicio de autenticación
      */
     private final AuthService authService;
+
+    private final JwtUtils jwtUtils;
 
     /**
      * Inicia la sesión del usuario devolviéndole el token
@@ -47,16 +47,21 @@ public class AuthController {
      * Refresca el token de acceso del usuario
      */
     @PostMapping(ApiRoutes.Auth.REFRESH)
-    public ResponseEntity<AuthResponse> refresh(@Valid @RequestBody RefreshRequest request) {
-        return ResponseEntity.ok(authService.refresh(request));
+    public ResponseEntity<AuthResponse> refresh(
+            @Valid @RequestBody RefreshRequest request,
+            @RequestHeader("Authorization") String authorizationHeader
+    ) {
+        String oldAccessToken = jwtUtils.extractTokenOrThrow(authorizationHeader);
+        return ResponseEntity.ok(authService.refresh(request, oldAccessToken));
     }
 
     /**
      * Cierra la sesión del usuario
      */
     @PostMapping(ApiRoutes.Auth.LOGOUT)
-    public ResponseEntity<Void> logout() {
-        authService.logout();
+    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String authorizationHeader) {
+        String accessTokenToInvalidate = jwtUtils.extractTokenOrThrow(authorizationHeader);
+        authService.logout(accessTokenToInvalidate);
         return ResponseEntity.ok().build();
     }
 }

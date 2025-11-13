@@ -23,6 +23,7 @@ public final class ApiRoutes {
     public static final String BY_NAME = "/{name}";
     public static final String EXISTS = "/exists";
     public static final String ALL = "/all";
+    public static final String CURRENT = "/current";
 
     /**
      * Documentación
@@ -68,5 +69,37 @@ public final class ApiRoutes {
         public static final String BASE = API + "/user";
         public static final String RESTORE = "/restore" + BY_ID;
         public static final String ME = "/me";
+    }
+
+    /**
+     * Clase estática con las rutas del controlador de categorías
+     */
+    public static final class Category {
+        /**
+         * Constructor privado para evitar instancias
+         */
+        private Category() {
+        }
+
+        /**
+         * Ruta base del controlador
+         */
+        public static final String BASE = API + "/category";
+    }
+
+    /**
+     * Clase estática con las rutas del controlador de transacciones
+     */
+    public static final class Transaction {
+        /**
+         * Constructor privado para evitar instancias
+         */
+        private Transaction() {
+        }
+
+        /**
+         * Ruta base del controlador
+         */
+        public static final String BASE = API + "/transaction";
     }
 }

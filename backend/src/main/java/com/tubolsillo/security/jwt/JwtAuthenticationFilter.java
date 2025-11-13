@@ -1,5 +1,6 @@
 package com.tubolsillo.security.jwt;
 
+import com.tubolsillo.security.jwt.blacklist.RedisBlacklistService;
 import com.tubolsillo.security.user.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -34,6 +35,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * Servicio personalizado para cargar los detalles del usuario a partir del email.
      */
     private final CustomUserDetailsService userDetailsService;
+
+    /**
+     * Servicio de lista negra de tokens
+     */
+    private final RedisBlacklistService blacklistService;
 
     /**
      * Realiza el filtrado de la petición HTTP.
@@ -72,9 +78,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        String token = getJwtFromRequest(request);
+        String authorizationHeader = request.getHeader("Authorization");
 
-        if (StringUtils.hasText(token) && jwtUtils.validateToken(token)) {
+        String token = jwtUtils.extractTokenIfPresent(authorizationHeader);
+
+        // Se valida que el token no esté vacío y sea válido
+        if (token != null && jwtUtils.validateToken(token)) {
+
+            // Se comprueba que el token no esté en la blacklist
+            if (blacklistService.isBlacklisted(token)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            // Se obtiene al usuario del token
             String email = jwtUtils.getEmailFromToken(token);
             var userDetails = userDetailsService.loadUserByUsername(email);
 
@@ -89,23 +106,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-    }
-
-    /**
-     * Extrae el token JWT de la cabecera 'Authorization' de la petición HTTP.
-     * <p>
-     * Se espera que el token tenga el formato "Bearer [token]".
-     * </p>
-     *
-     * @param request La petición HTTP.
-     * @return El token JWT como una cadena de texto si se encuentra y tiene el formato correcto,
-     * o {@code null} en caso contrario.
-     */
-    private String getJwtFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
     }
 }

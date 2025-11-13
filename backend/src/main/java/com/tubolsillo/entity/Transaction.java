@@ -27,15 +27,22 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @Column(nullable = false)
     private Double amount;
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    private Date date;
+    @Column(name = "date")
+    private LocalDate transactionDate;
 
+    @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDate createdAt;
 }
