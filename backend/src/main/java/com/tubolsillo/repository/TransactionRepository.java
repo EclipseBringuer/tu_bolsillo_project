@@ -24,8 +24,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     /**
      * Obtiene el listado de transacciones realizadas por un usuario
-     * @param user El usuario de las transacciones
+     *
+     * @param email El email del usuario de las transacciones
      * @return El listado de transacciones coincidentes
      */
-    List<Transaction> findAllByUser(User user);
+    List<Transaction> findAllByUserEmail(String email);
 }
