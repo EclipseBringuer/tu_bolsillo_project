@@ -1,10 +1,8 @@
 package com.tubolsillo.exception;
 
 import com.tubolsillo.dto.ErrorResponse;
-import com.tubolsillo.exception.custom.EmailAlreadyInUseException;
-import com.tubolsillo.exception.custom.InvalidCredentialsException;
-import com.tubolsillo.exception.custom.RoleNotFoundException;
-import com.tubolsillo.exception.custom.TokenExpiredException;
+import com.tubolsillo.exception.custom.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,6 +17,7 @@ import java.util.stream.Collectors;
  * Global exception handler para manejar las excepciones lanzadas en la aplicación.
  */
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     /**
@@ -29,6 +28,7 @@ public class GlobalExceptionHandler {
      * @return Un ErrorResponse con la información
      */
     private ErrorResponse buildErrorResponse(HttpStatus status, String message) {
+        log.error(message);
         return new ErrorResponse(status.value(), message, LocalDateTime.now());
     }
 
@@ -86,6 +86,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException ex) {
         return new ResponseEntity<>(buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Maneja la excepción InvalidTokenFormatException y devuelve un error 401.
+     *
+     * @param ex Excepción que se lanza cuando el bearer token no tiene el formato correcto
+     * @return ResponseEntity con detalles del error.
+     */
+    @ExceptionHandler(InvalidTokenFormatException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidTokenFormatException(InvalidTokenFormatException ex) {
+        return new ResponseEntity<>(buildErrorResponse(HttpStatus.UNAUTHORIZED, ex.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
     /**
