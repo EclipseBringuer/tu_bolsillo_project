@@ -58,6 +58,15 @@ public class RefreshTokenService {
     }
 
     /**
+     * Elimina el refresh token
+     *
+     * @param refreshToken El token a borrar
+     */
+    public void deleteRefreshToken(RefreshToken refreshToken) {
+        refreshTokenRepository.delete(refreshToken);
+    }
+
+    /**
      * Verifica la expiración del token
      *
      * @param token El token a verificar
