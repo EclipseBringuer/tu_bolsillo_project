@@ -1,5 +1,6 @@
 package com.tubolsillo.security.jwt;
 
+import com.tubolsillo.exception.custom.InvalidTokenFormatException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -7,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -78,6 +80,21 @@ public class JwtUtils {
     }
 
     /**
+     * Obtiene la fecha de expiración del token.
+     *
+     * @param token El token.
+     * @return La fecha de expiración (Date) del token.
+     */
+    public Date getExpirationDateFromToken(String token) {
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getExpiration();
+    }
+
+    /**
      * Comprueba si un token es válido
      *
      * @param token El token a validar
@@ -93,5 +110,32 @@ public class JwtUtils {
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+
+    /**
+     * [USO EN FILTRO JWT]
+     * Extrae el JWT de la cabecera. Devuelve la cadena pura del token si está presente y tiene el formato "Bearer ".
+     *
+     * @param authorizationHeader El valor completo de la cabecera Authorization.
+     * @return El JWT sin el prefijo "Bearer ", o null si falta o es incorrecto.
+     */
+    public String extractTokenIfPresent(String authorizationHeader) {
+        if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith("Bearer "))
+            return authorizationHeader.substring(7);
+        return null;
+    }
+
+    /**
+     * [USO EN CONTROLADORES]
+     * Extrae el JWT de la cabecera. Lanza InvalidTokenFormatException si el formato es incorrecto.
+     *
+     * @param authorizationHeader El valor completo de la cabecera Authorization.
+     * @return El JWT sin el prefijo "Bearer ".
+     * @throws InvalidTokenFormatException si el token no está presente o no tiene el formato "Bearer ".
+     */
+    public String extractTokenOrThrow(String authorizationHeader) {
+        if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith("Bearer "))
+            return authorizationHeader.substring(7);
+        throw new InvalidTokenFormatException();
     }
 }
