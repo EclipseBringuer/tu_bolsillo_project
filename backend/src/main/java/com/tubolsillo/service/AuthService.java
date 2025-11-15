@@ -70,6 +70,7 @@ public class AuthService {
      * @param request La petición de inicio de sesión
      * @return Respuesta autorizada
      */
+    @Transactional
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmailAndDeletedAtIsNull(request.email())
                 .orElseThrow(InvalidCredentialsException::new);
