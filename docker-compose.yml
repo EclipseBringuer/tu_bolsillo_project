@@ -31,10 +31,7 @@ services:
     image: redis:latest
     container_name: tu_bolsillo_redis
     restart: always
-    environment:
-      REDIS_PASSWORD: Passw0rd$
-    ports:
-      - "6379:6379"
+    command: ["redis-server", "--requirepass", "Passw0rd$"]
 
   backend:
     build:
