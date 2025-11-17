@@ -23,7 +23,6 @@ public final class ApiRoutes {
     public static final String BY_NAME = "/{name}";
     public static final String EXISTS = "/exists";
     public static final String ALL = "/all";
-    public static final String CURRENT = "/current";
 
     /**
      * Documentación

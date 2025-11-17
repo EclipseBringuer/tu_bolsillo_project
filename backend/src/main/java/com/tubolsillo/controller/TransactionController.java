@@ -29,7 +29,7 @@ public class TransactionController {
      *
      * @return El listado con las transacciones del usuario
      */
-    @GetMapping(ApiRoutes.CURRENT)
+    @GetMapping
     public ResponseEntity<List<TransactionDTO>> getCurrentUserTransactions() {
         return ResponseEntity.ok(transactionService.getCurrentUserTransactions());
     }
