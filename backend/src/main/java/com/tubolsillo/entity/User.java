@@ -1,9 +1,7 @@
 package com.tubolsillo.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -14,7 +12,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "user")
-@Data
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
