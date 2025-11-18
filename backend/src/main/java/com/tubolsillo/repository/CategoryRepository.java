@@ -19,4 +19,13 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
      * @return El listado de categorías
      */
     List<Category> findAllByUserEmail(String email);
+
+    /**
+     * Verifica si ya existe una categoría con el mismo usuario y el mismo nombre
+     *
+     * @param email El email del usuario
+     * @param name  El nombre de la categoría
+     * @return Si existe o no
+     */
+    boolean existsByUserEmailAndName(String email, String name);
 }
