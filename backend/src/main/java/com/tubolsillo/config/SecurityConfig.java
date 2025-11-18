@@ -58,7 +58,9 @@ public class SecurityConfig {
                                         ApiRoutes.DOCUMENTATION
                                 ).permitAll()
                                 .requestMatchers(
-                                        ApiRoutes.Auth.BASE + ApiRoutes.Auth.REGISTER
+                                        ApiRoutes.Auth.BASE + ApiRoutes.Auth.REGISTER,
+                                        ApiRoutes.User.BASE + ApiRoutes.EXISTS,
+                                        ApiRoutes.User.RESTORE
                                 ).hasRole(Roles.ADMIN)
                                 .anyRequest().authenticated())
                 .userDetailsService(customUserDetailsService)
