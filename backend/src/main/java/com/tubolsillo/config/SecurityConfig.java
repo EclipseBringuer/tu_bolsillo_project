@@ -26,9 +26,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    /**
+     * Filtro de autenticación JWT
+     */
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    /**
+     * Servicio personalizado de manejo de usuarios
+     */
     private final CustomUserDetailsService customUserDetailsService;
 
+    /**
+     * Configuración del filtro de seguridad
+     *
+     * @param http La seguridad
+     * @return La cadena de filtros de seguridad
+     * @throws Exception Si existe un error
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -52,11 +66,23 @@ public class SecurityConfig {
                 .build();
     }
 
+    /**
+     * Bean de generación de encriptadores de contraseña
+     *
+     * @return El encriptador
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Bean que devuelve el manejador de autenticación
+     *
+     * @param configuration La configuración de la autenticación
+     * @return El manejador de la autenticación
+     * @throws Exception Si hay un error
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
