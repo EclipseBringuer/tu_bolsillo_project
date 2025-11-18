@@ -100,6 +100,17 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Maneja la excepción CategoryRepeatedException y devuelve un error 401.
+     *
+     * @param ex Excepción que se lanza cuando un usuario intenta crear una categoría igual a una ya creada por el mismo
+     * @return ResponseEntity con detalles del error.
+     */
+    @ExceptionHandler(CategoryRepeatedException.class)
+    public ResponseEntity<ErrorResponse> handleCategoryRepeatedException(CategoryRepeatedException ex) {
+        return new ResponseEntity<>(buildErrorResponse(HttpStatus.CONFLICT, ex.getMessage()), HttpStatus.CONFLICT);
+    }
+
+    /**
      * Maneja la excepción MethodArgumentNotValidException y devuelve un error 400
      *
      * @param ex Excepción lanzada cuando se envían parámetros inválidos

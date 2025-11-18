@@ -17,4 +17,5 @@ public final class ErrorMessages {
     public static final String ROLE_NOT_FOUND = "No se ha encontrado el rol del usuario";
     public static final String TOKEN_EXPIRATION = "El token ha expirado";
     public static final String INVALID_TOKEN_FORMAT = "El bearer token no es valido";
+    public static final String CATEGORY_REPEATED = "La categoría con ese nombre ya existe";
 }
