@@ -4,11 +4,11 @@ import com.tubolsillo.dto.CategoryDTO;
 import com.tubolsillo.dto.CreateCategoryDTO;
 import com.tubolsillo.entity.Category;
 import com.tubolsillo.exception.custom.CategoryRepeatedException;
+import com.tubolsillo.exception.custom.ResourceNotFoundException;
 import com.tubolsillo.mapper.CategoryMapper;
 import com.tubolsillo.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +43,7 @@ public class CategoryService {
      * @return El listado de categorías del usuario
      */
     public List<CategoryDTO> getCurrentUserCategories() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
         log.info("Obteniendo las categorías del usuario '{}'", email);
         var categories = categoryRepository.findAllByUserEmail(email);
         return categories.stream().map(categoryMapper::toDTO).toList();
@@ -57,8 +56,7 @@ public class CategoryService {
      * @return La información de la categoría ya creada
      */
     public CategoryDTO saveCategory(CreateCategoryDTO categoryDTO) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
         if (categoryRepository.existsByUserEmailAndName(email, categoryDTO.name())) {
             log.error("La categoría '{}' ya existe para el usuario '{}'", categoryDTO.name(), email);
@@ -78,5 +76,16 @@ public class CategoryService {
         log.info("Categoría '{}' creada con éxito", newCategory.getName());
 
         return new CategoryDTO(newCategory.getId(), newCategory.getName(), newCategory.getType());
+    }
+
+    /**
+     * Devuelve la Categoría especificada por su ID
+     *
+     * @param id El identificador de la categoría
+     * @return La categoría
+     */
+    public Category findCategoryById(Long id) {
+        return categoryRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("La categoría con ID=" + id + " no existe"));
     }
 }
