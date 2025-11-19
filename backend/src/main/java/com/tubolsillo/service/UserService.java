@@ -1,7 +1,6 @@
 package com.tubolsillo.service;
 
 import com.tubolsillo.dto.UserDTO;
-import com.tubolsillo.entity.Role;
 import com.tubolsillo.entity.User;
 import com.tubolsillo.exception.custom.ResourceNotFoundException;
 import com.tubolsillo.mapper.UserMapper;
