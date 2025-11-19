@@ -3,6 +3,9 @@ package com.tubolsillo.controller;
 import com.tubolsillo.constants.ApiRoutes;
 import com.tubolsillo.dto.UserDTO;
 import com.tubolsillo.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping(ApiRoutes.User.BASE)
+@Tag(name = "Usuarios", description = "Operaciones para gestionar y buscar usuarios.")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -23,6 +27,10 @@ public class UserController {
     /**
      * Obtiene la información del usuario actual
      */
+    @Operation(
+            summary = "Obtener usuario actual",
+            description = "Obtiene la información del usuario que realiza la petición"
+    )
     @GetMapping(ApiRoutes.User.ME)
     public ResponseEntity<UserDTO> getCurrentUSer() {
         return ResponseEntity.ok(userService.getCurrentUser());
@@ -31,8 +39,14 @@ public class UserController {
     /**
      * Elimina lógicamente el usuario indicado
      */
+    @Operation(
+            summary = "Borrar usuario",
+            description = "Borra a un usuario de forma lógica en el sistema"
+    )
     @DeleteMapping(ApiRoutes.BY_ID)
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(
+            @Parameter(description = "Identificador único del usuario (Long)", required = true)
+            @PathVariable Long id) {
         userService.softDeleteUser(id); // Borrado suave
         return ResponseEntity.noContent().build();
     }
@@ -40,8 +54,14 @@ public class UserController {
     /**
      * Restaura un usuario eliminado lógicamente
      */
+    @Operation(
+            summary = "Restaurar usuario",
+            description = "Restaura a un usuario que esté eliminado de forma lógica"
+    )
     @PatchMapping(ApiRoutes.User.RESTORE)
-    public ResponseEntity<Void> restoreUser(@PathVariable Long id) {
+    public ResponseEntity<Void> restoreUser(
+            @Parameter(description = "Identificador único del usuario (Long)", required = true)
+            @PathVariable Long id) {
         userService.restoreUser(id);
         return ResponseEntity.noContent().build();
     }
@@ -49,8 +69,14 @@ public class UserController {
     /**
      * Verifica si existe un usuario por email
      */
+    @Operation(
+            summary = "Comprobar usuario",
+            description = "Comprueba si un usuario existe en el sistema mediante su email"
+    )
     @GetMapping(ApiRoutes.EXISTS)
-    public ResponseEntity<Boolean> userExists(@RequestParam String email) {
+    public ResponseEntity<Boolean> userExists(
+            @Parameter(description = "Email del usuario (String)", required = true)
+            @RequestParam String email) {
         return ResponseEntity.ok(userService.existsByEmail(email));
     }
 }
