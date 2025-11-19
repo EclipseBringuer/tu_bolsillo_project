@@ -25,6 +25,9 @@ public class AuthController {
      */
     private final AuthService authService;
 
+    /**
+     * Utilidad de JWT
+     */
     private final JwtUtils jwtUtils;
 
     /**
