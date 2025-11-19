@@ -4,6 +4,7 @@ import com.tubolsillo.dto.UserDTO;
 import com.tubolsillo.entity.Role;
 import com.tubolsillo.entity.User;
 import com.tubolsillo.exception.custom.ResourceNotFoundException;
+import com.tubolsillo.mapper.UserMapper;
 import com.tubolsillo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +21,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
 
+    /**
+     * Repositorio de la entidad User
+     */
     private final UserRepository userRepository;
+
+    /**
+     * Conversor de la entidad User
+     */
+    private final UserMapper userMapper;
 
     /**
      * Devuelve la información del usuario actual
@@ -32,12 +41,7 @@ public class UserService {
 
         User user = findByEmail(email);
 
-        return new UserDTO(
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getRoles().stream().map(Role::getName).toList()
-        );
+        return userMapper.toUserDTO(user);
     }
 
     /**
