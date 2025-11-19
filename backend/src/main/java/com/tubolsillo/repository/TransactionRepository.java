@@ -2,7 +2,6 @@ package com.tubolsillo.repository;
 
 import com.tubolsillo.entity.Category;
 import com.tubolsillo.entity.Transaction;
-import com.tubolsillo.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
