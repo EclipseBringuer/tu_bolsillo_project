@@ -3,10 +3,9 @@ package com.tubolsillo.service;
 import com.tubolsillo.dto.UserDTO;
 import com.tubolsillo.entity.Role;
 import com.tubolsillo.entity.User;
-import com.tubolsillo.exception.custom.UserNotFoundException;
+import com.tubolsillo.exception.custom.ResourceNotFoundException;
 import com.tubolsillo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +28,9 @@ public class UserService {
      * @return DTO de usuario con la información del usuario actual
      */
     public UserDTO getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        User user = userRepository.findByEmailAndDeletedAtIsNull(email).orElseThrow(UserNotFoundException::new);
+        User user = findByEmail(email);
 
         return new UserDTO(
                 user.getFirstName(),
@@ -49,7 +47,8 @@ public class UserService {
      * @return El usuario encontrado
      */
     public User findByEmail(String email) {
-        return userRepository.findByEmailAndDeletedAtIsNull(email).orElseThrow(UserNotFoundException::new);
+        return userRepository.findByEmailAndDeletedAtIsNull(email)
+                .orElseThrow(() -> new ResourceNotFoundException("El usuario '" + email + "' no existe."));
     }
 
     /**
@@ -69,7 +68,8 @@ public class UserService {
      * @return El usuario activo encontrado
      */
     public User findById(Long id) {
-        return userRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(UserNotFoundException::new);
+        return userRepository.findByIdAndDeletedAtIsNull(id)
+                .orElseThrow(() -> new ResourceNotFoundException("El usuario con ID=" + id + " no existe."));
     }
 
     /**
@@ -98,7 +98,8 @@ public class UserService {
      * @param id El identificador del usuario
      */
     public void restoreUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("El usuario con ID=" + id + " no existe."));
         user.setDeletedAt(null);
         userRepository.save(user);
     }

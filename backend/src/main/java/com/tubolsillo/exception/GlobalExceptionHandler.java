@@ -56,17 +56,6 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Maneja la excepción RoleNotFoundException y devuelve un error 404.
-     *
-     * @param ex Excepción lanzada cuando el rol no se ha encontrado.
-     * @return ResponseEntity con detalles del error.
-     */
-    @ExceptionHandler(RoleNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleRoleNotFoundException(RoleNotFoundException ex) {
-        return new ResponseEntity<>(buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage()), HttpStatus.NOT_FOUND);
-    }
-
-    /**
      * Maneja la excepción TokenExpiredException y devuelve un 401
      *
      * @param ex Excepción que se lanza cuando el token utilizado ha expirado
@@ -100,7 +89,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Maneja la excepción CategoryRepeatedException y devuelve un error 401.
+     * Maneja la excepción CategoryRepeatedException y devuelve un error 409.
      *
      * @param ex Excepción que se lanza cuando un usuario intenta crear una categoría igual a una ya creada por el mismo
      * @return ResponseEntity con detalles del error.
@@ -108,6 +97,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CategoryRepeatedException.class)
     public ResponseEntity<ErrorResponse> handleCategoryRepeatedException(CategoryRepeatedException ex) {
         return new ResponseEntity<>(buildErrorResponse(HttpStatus.CONFLICT, ex.getMessage()), HttpStatus.CONFLICT);
+    }
+
+    /**
+     * Maneja la excepción ResourceNotFoundException y devuelve un error 404
+     *
+     * @param ex Excepción que se lanza cuando un recurso no se ha encontrado en el sistema
+     * @return ResponseEntity con los detalles del error
+     */
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        return new ResponseEntity<>(buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     /**
