@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.List;
 
 /**
  * Servicio con las funcionalidades relacionadas con la entidad User
@@ -83,15 +82,6 @@ public class UserService {
      */
     public UserDTO getUserDTOById(Long id) {
         return userMapper.toUserDTO(findById(id));
-    }
-
-    /**
-     * Lista todos los usuarios que no han sido eliminados
-     *
-     * @return Lista de usuarios activos
-     */
-    public List<User> findAll() {
-        return userRepository.findAllByDeletedAtIsNull();
     }
 
     /**
