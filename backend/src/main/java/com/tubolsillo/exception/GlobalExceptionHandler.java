@@ -136,6 +136,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllException(Exception ex) {
         return new ResponseEntity<>(buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,
-                "Ocurrió un error inesperado. Intente más tarde: " + ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+                "Ocurrió un error inesperado" + ex.getClass() +". Intente más tarde: " + ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
