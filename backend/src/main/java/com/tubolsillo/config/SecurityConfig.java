@@ -60,6 +60,7 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         ApiRoutes.Auth.BASE + ApiRoutes.Auth.REGISTER,
                                         ApiRoutes.User.BASE + ApiRoutes.EXISTS,
+                                        ApiRoutes.User.BASE + ApiRoutes.BY_ID,
                                         ApiRoutes.User.RESTORE
                                 ).hasRole(Roles.ADMIN)
                                 .anyRequest().authenticated())
