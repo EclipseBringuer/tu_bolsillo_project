@@ -84,8 +84,43 @@ public class CategoryService {
      * @param id El identificador de la categoría
      * @return La categoría
      */
-    public Category findCategoryById(Long id) {
-        return categoryRepository.findById(id).orElseThrow(
+    public Category findCategoryEntityById(Long id) {
+        // Se obtiene al usuario que realiza la petición
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userService.findByEmail(email);
+
+        // Se obtiene la categoría
+        var category = categoryRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("La categoría con ID=" + id + " no existe"));
+
+        // Se comprueba que la categoría pertenezca al usuario
+        if (!category.getUser().getId().equals(user.getId())) {
+            log.error("La categoría con ID={} no pertenece al usuario '{}'", category.getId(), email);
+            throw new ResourceNotFoundException("La categoría con ID=" + id + " no existe");
+        }
+
+        // Se devuelve su información
+        return category;
+    }
+
+    /**
+     * Devuelve la Categoría en formato DTO por su ID
+     *
+     * @param id El identificador de la categoría
+     * @return La categoría en formato DTO
+     */
+    public CategoryDTO getCategoryDTOById(Long id) {
+        return categoryMapper.toDTO(findCategoryEntityById(id));
+    }
+
+    /**
+     * Elimina una categoría mediante su identificador
+     *
+     * @param id El identificador de la categoría
+     */
+    public void deleteCategory(Long id) {
+        log.info("Borrando la categoría con ID={}", id);
+        categoryRepository.deleteById(findCategoryEntityById(id).getId());
+        log.info("La categoría con ID={} ha sido eliminada correctamente", id);
     }
 }
