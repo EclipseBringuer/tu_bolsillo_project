@@ -5,9 +5,12 @@ import com.tubolsillo.dto.CreateTransactionDTO;
 import com.tubolsillo.dto.TransactionDTO;
 import com.tubolsillo.service.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,8 +41,10 @@ public class TransactionController {
             description = "Obtiene las transacciones del usuario que realiza la petición"
     )
     @GetMapping
-    public ResponseEntity<List<TransactionDTO>> getCurrentUserTransactions() {
-        return ResponseEntity.ok(transactionService.getCurrentUserTransactions());
+    public ResponseEntity<Page<TransactionDTO>> getCurrentUserTransactions(
+            @Parameter(description = "Paginación y ordenación: ?page=0&size=20&sort=date,desc")
+            Pageable pageable) {
+        return ResponseEntity.ok(transactionService.getCurrentUserTransactions(pageable));
     }
 
     /**
@@ -55,5 +60,40 @@ public class TransactionController {
     @PostMapping
     public ResponseEntity<TransactionDTO> createTransaction(@Valid @RequestBody CreateTransactionDTO transactionDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(transactionService.saveTransaction(transactionDTO));
+    }
+
+    /**
+     * Obtiene una transacción por su identificador
+     *
+     * @param id El identificador de la transacción
+     * @return La transacción
+     */
+    @Operation(
+            summary = "Obtener Transacción",
+            description = "Obtiene la información de una transacción por su identificador"
+    )
+    @GetMapping(ApiRoutes.BY_ID)
+    public ResponseEntity<TransactionDTO> getTransactionById(
+            @Parameter(description = "Identificador único de la transacción (Long)", required = true)
+            @PathVariable Long id) {
+        return ResponseEntity.ok(transactionService.getTransactionById(id));
+    }
+
+    /**
+     * Elimina una transacción por su identificador
+     *
+     * @param id El identificador de la transacción
+     * @return Una respuesta vacía
+     */
+    @Operation(
+            summary = "Borrar Transacción",
+            description = "Elimina una transacción por su identificador"
+    )
+    @DeleteMapping(ApiRoutes.BY_ID)
+    public ResponseEntity<Void> deleteTransaction(
+            @Parameter(description = "Identificador único de la transacción (Long)", required = true)
+            @PathVariable Long id) {
+        transactionService.deleteTransaction(id);
+        return ResponseEntity.noContent().build();
     }
 }

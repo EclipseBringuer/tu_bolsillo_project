@@ -2,6 +2,8 @@ package com.tubolsillo.repository;
 
 import com.tubolsillo.entity.Category;
 import com.tubolsillo.entity.Transaction;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -27,5 +29,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
      * @param email El email del usuario de las transacciones
      * @return El listado de transacciones coincidentes
      */
-    List<Transaction> findAllByUserEmail(String email);
+    Page<Transaction> findAllByUserEmail(String email, Pageable pageable);
 }
