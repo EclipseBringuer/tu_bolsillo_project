@@ -32,8 +32,22 @@ public class UserController {
             description = "Obtiene la información del usuario que realiza la petición"
     )
     @GetMapping(ApiRoutes.User.ME)
-    public ResponseEntity<UserDTO> getCurrentUSer() {
+    public ResponseEntity<UserDTO> getCurrentUser() {
         return ResponseEntity.ok(userService.getCurrentUser());
+    }
+
+    /**
+     * Obtiene un usuario activo por su ID
+     */
+    @Operation(
+            summary = "Obtener usuario por ID",
+            description = "Obtiene la información de un usuario activo por su identificador"
+    )
+    @GetMapping(ApiRoutes.BY_ID)
+    public ResponseEntity<UserDTO> getUserById(
+            @Parameter(description = "Identificador único del usuario (Long)", required = true)
+            @PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserDTOById(id));
     }
 
     /**

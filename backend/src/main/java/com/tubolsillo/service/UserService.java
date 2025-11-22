@@ -76,6 +76,16 @@ public class UserService {
     }
 
     /**
+     * Obtiene un DTO de un usuario activo por su id
+     *
+     * @param id El identificador del usuario
+     * @return El DTO del usuario encontrado
+     */
+    public UserDTO getUserDTOById(Long id) {
+        return userMapper.toUserDTO(findById(id));
+    }
+
+    /**
      * Lista todos los usuarios que no han sido eliminados
      *
      * @return Lista de usuarios activos
