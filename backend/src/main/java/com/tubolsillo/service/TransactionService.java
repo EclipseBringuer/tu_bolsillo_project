@@ -69,12 +69,7 @@ public class TransactionService {
         User user = userService.findByEmail(email);
 
         // Se obtiene la categoría y se verifica que pertenezca al usuario
-        Category category = categoryService.findCategoryById(transactionDTO.categoryId());
-
-        if (!category.getUser().getId().equals(user.getId())) {
-            log.error("La categoría con ID={} no pertenece al usuario '{}'", category.getId(), email);
-            throw new ResourceNotFoundException("La categoría especificada no fue encontrada");
-        }
+        Category category = categoryService.findCategoryEntityById(transactionDTO.categoryId());
 
         // Se crea la transacción
         Transaction newTransaction = Transaction.builder()
@@ -124,9 +119,8 @@ public class TransactionService {
      * @param id El identificador de la transacción
      */
     public void deleteTransaction(Long id) {
-        var transaction = getTransactionById(id);
         log.info("Borrando la transacción con ID={}", id);
-        transactionRepository.deleteById(transaction.id());
+        transactionRepository.deleteById(getTransactionById(id).id());
         log.info("La transacción con ID={} ha sido eliminada correctamente", id);
     }
 }
