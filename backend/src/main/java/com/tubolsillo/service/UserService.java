@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 
 /**
@@ -91,7 +90,7 @@ public class UserService {
      */
     public void softDeleteUser(Long id) {
         User user = findById(id); // Solo usuarios activos
-        user.setDeletedAt(Timestamp.from(Instant.now()));
+        user.setDeletedAt(Instant.now());
         userRepository.save(user);
     }
 
