@@ -1,1 +1,28 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estilos globales */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Variables */
+:root {
+  /* Fuentes */
+  --title-font: '';
+  --regular-text-font: '';
+
+  /* Colores */
+  --primary-color: '';
+  --secondary-color: '';
+  --background-color: '';
+
+  /* Valores */
+  --border-radius: 8px;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos generales */
+body {
+  font-family: var(--regular-text-font);
+  background-color: var(--background-color);
+}
