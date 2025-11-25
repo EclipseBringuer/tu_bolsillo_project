@@ -8,6 +8,8 @@ El proyecto consta principalmente de tres partes:
 
 - **Base de datos:** Usando MySQL como SGBD.
 
+- **Servicio Redis:** Servicio de Redis para una blacklist de tokens de acceso.
+
 - **Backend:** Desarrollado con el framework Spring Boot 3.5.7 para Java 21.
 
 - **Frontend:** Desarrollado con Angular 20.

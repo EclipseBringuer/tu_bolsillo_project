@@ -7,17 +7,13 @@ import com.tubolsillo.dto.RegisterRequest;
 import com.tubolsillo.entity.RefreshToken;
 import com.tubolsillo.entity.Role;
 import com.tubolsillo.entity.User;
-import com.tubolsillo.exception.custom.EmailAlreadyInUseException;
-import com.tubolsillo.exception.custom.InvalidCredentialsException;
-import com.tubolsillo.exception.custom.RoleNotFoundException;
-import com.tubolsillo.exception.custom.UserNotFoundException;
+import com.tubolsillo.exception.custom.*;
 import com.tubolsillo.repository.RoleRepository;
 import com.tubolsillo.repository.UserRepository;
 import com.tubolsillo.security.jwt.JwtUtils;
 import com.tubolsillo.security.jwt.blacklist.RedisBlacklistService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -70,6 +66,7 @@ public class AuthService {
      * @param request La petición de inicio de sesión
      * @return Respuesta autorizada
      */
+    @Transactional
     public AuthResponse login(LoginRequest request) {
         User user = userRepository.findByEmailAndDeletedAtIsNull(request.email())
                 .orElseThrow(InvalidCredentialsException::new);
@@ -100,10 +97,7 @@ public class AuthService {
         }
 
         Role userRole = roleRepository.findByName("USER")
-                .orElseThrow(() -> {
-                    log.error("No se encontró el rol 'USER' en el sistema.");
-                    return new RoleNotFoundException();
-                });
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró el rol 'USER' en el sistema."));
 
         User user = new User();
         user.setFirstName(request.firstName());
@@ -159,9 +153,9 @@ public class AuthService {
     @Transactional
     public void logout(String accessTokenToInvalidate) {
         // Se obtiene el usuario a partir del token
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        User user = userRepository.findByEmailAndDeletedAtIsNull(email).orElseThrow(UserNotFoundException::new);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmailAndDeletedAtIsNull(email)
+                .orElseThrow(() -> new ResourceNotFoundException("El usuario '" + email + "' no existe"));
 
         // Se añade el token de acceso a la blacklist
         Date expiration = jwtUtils.getExpirationDateFromToken(accessTokenToInvalidate);

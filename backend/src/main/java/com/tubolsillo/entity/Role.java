@@ -1,16 +1,14 @@
 package com.tubolsillo.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * Representa un rol de usuario en el sistema
  */
 @Entity
 @Table(name = "role")
-@Data
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Role {

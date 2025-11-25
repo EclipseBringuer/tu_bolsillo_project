@@ -1,11 +1,8 @@
 package com.tubolsillo.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Set;
 
@@ -14,7 +11,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "user")
-@Data
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -47,26 +44,26 @@ public class User {
     /**
      * Contraseña encriptada del usuario
      */
-    @Column(nullable = false)
+    @Column(nullable = false, length = 60)
     private String password;
 
     /**
      * Fecha de creación del usuario
      */
     @Column(name = "created_at", nullable = false)
-    private Timestamp createdAt;
+    private Instant createdAt;
 
     /**
      * Fecha de la última actualización del usuario
      */
     @Column(name = "updated_at", nullable = false)
-    private Timestamp updatedAt;
+    private Instant updatedAt;
 
     /**
      * Fecha de eliminación lógica del usuario (null si no ha sido eliminado).
      */
     @Column(name = "deleted_at")
-    private Timestamp deletedAt;
+    private Instant deletedAt;
 
     /**
      * Roles asignados al usuario
@@ -85,7 +82,7 @@ public class User {
      */
     @PrePersist
     public void onCreate() {
-        Timestamp now = Timestamp.from(Instant.now());
+        Instant now = Instant.now();
         this.createdAt = now;
         this.updatedAt = now;
     }
@@ -96,6 +93,6 @@ public class User {
      */
     @PreUpdate
     public void onUpdate() {
-        this.updatedAt = Timestamp.from(Instant.now());
+        this.updatedAt = Instant.now();
     }
 }

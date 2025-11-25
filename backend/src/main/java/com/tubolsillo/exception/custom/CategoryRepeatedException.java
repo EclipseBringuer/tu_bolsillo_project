@@ -3,15 +3,15 @@ package com.tubolsillo.exception.custom;
 import com.tubolsillo.constants.ErrorMessages;
 
 /**
- * Excepción que salta cuando un rol no se ha encontrado
+ * Excepción que se da cuando un nombre de categoría ya está en uso
  */
-public class RoleNotFoundException extends RuntimeException {
+public class CategoryRepeatedException extends RuntimeException {
 
     /**
      * Construye la excepción con un mensaje por defecto
      */
-    public RoleNotFoundException() {
-        super(ErrorMessages.ROLE_NOT_FOUND);
+    public CategoryRepeatedException() {
+        super(ErrorMessages.CATEGORY_REPEATED);
     }
 
     /**
@@ -19,7 +19,7 @@ public class RoleNotFoundException extends RuntimeException {
      *
      * @param message El mensaje personalizado
      */
-    public RoleNotFoundException(String message) {
+    public CategoryRepeatedException(String message) {
         super(message);
     }
 }

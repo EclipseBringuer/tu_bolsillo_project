@@ -13,9 +13,9 @@ id BIGINT PRIMARY KEY AUTO_INCREMENT,
 first_name VARCHAR(100) NOT NULL,
 last_name VARCHAR(150) NOT NULL,
 email VARCHAR(150) NOT NULL UNIQUE,
-`password` VARCHAR(255) NOT NULL, -- Contraseña hasheada
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+`password` CHAR(60) NOT NULL, -- Contraseña hasheada
+created_at TIMESTAMP NOT NULL,
+updated_at TIMESTAMP NOT NULL,
 deleted_at TIMESTAMP NULL
 );
 
@@ -32,7 +32,7 @@ PRIMARY KEY (role_id, user_id)
 CREATE TABLE refresh_token(
 id BIGINT PRIMARY KEY AUTO_INCREMENT,
 user_id BIGINT NOT NULL,
-token VARCHAR(255) NOT NULL UNIQUE,
+token CHAR(36) NOT NULL UNIQUE,
 expiry_date TIMESTAMP NOT NULL,
 FOREIGN KEY (user_id) REFERENCES `user`(id) ON DELETE CASCADE
 );
@@ -70,8 +70,8 @@ CREATE INDEX idx_transaction_date ON `transaction`(`date`);
 INSERT INTO `role`(`name`) VALUES ("USER"), ("ADMIN");
 
 -- Inserción de usuario administrador
-INSERT INTO `user`(first_name, last_name, email, `password`) VALUES
-("Gabriel", "Rincón López", "gabrielrl2004@gmail.com", "$2a$12$SoHnhXiNQWRtjb/KGf90VubROVrW3T/jPBoILleD6oQ0PWxiASRLS");
+INSERT INTO `user`(first_name, last_name, email, `password`, created_at, updated_at) VALUES
+("Gabriel", "Rincón López", "gabrielrl2004@gmail.com", "$2a$12$SoHnhXiNQWRtjb/KGf90VubROVrW3T/jPBoILleD6oQ0PWxiASRLS", CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Inserción de los roles en los usuarios administradores
 INSERT INTO user_role(role_id, user_id) VALUES 

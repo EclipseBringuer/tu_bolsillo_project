@@ -2,16 +2,15 @@ package com.tubolsillo.entity;
 
 import com.tubolsillo.entity.enums.Type;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * Entidad que representa una categoría de transacción
  */
 @Entity
 @Table(name = "category")
-@Data
+@Getter @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category {
