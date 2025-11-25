@@ -2,6 +2,7 @@ package com.tubolsillo.controller;
 
 import com.tubolsillo.constants.ApiRoutes;
 import com.tubolsillo.dto.CreateTransactionDTO;
+import com.tubolsillo.dto.CustomPageResponse;
 import com.tubolsillo.dto.TransactionDTO;
 import com.tubolsillo.service.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,7 +10,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,10 +39,11 @@ public class TransactionController {
             description = "Obtiene las transacciones del usuario que realiza la petición"
     )
     @GetMapping
-    public ResponseEntity<Page<TransactionDTO>> getCurrentUserTransactions(
+    public ResponseEntity<CustomPageResponse<TransactionDTO>> getCurrentUserTransactions(
             @Parameter(description = "Paginación y ordenación: ?page=0&size=20&sort=date,desc")
             Pageable pageable) {
-        return ResponseEntity.ok(transactionService.getCurrentUserTransactions(pageable));
+        var transactionsPage = transactionService.getCurrentUserTransactions(pageable);
+        return ResponseEntity.ok(new CustomPageResponse<>(transactionsPage));
     }
 
     /**
