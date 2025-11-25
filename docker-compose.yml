@@ -53,5 +53,14 @@ services:
       redis:
         condition: service_started
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tu_bolsillo_frontend
+    restart: always
+    ports:
+      - "4200:80"
+
 volumes:
   db_data:
