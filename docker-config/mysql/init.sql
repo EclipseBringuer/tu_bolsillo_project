@@ -70,8 +70,8 @@ CREATE INDEX idx_transaction_date ON `transaction`(`date`);
 INSERT INTO `role`(`name`) VALUES ("USER"), ("ADMIN");
 
 -- Inserción de usuario administrador
-INSERT INTO `user`(first_name, last_name, email, `password`) VALUES
-("Gabriel", "Rincón López", "gabrielrl2004@gmail.com", "$2a$12$SoHnhXiNQWRtjb/KGf90VubROVrW3T/jPBoILleD6oQ0PWxiASRLS");
+INSERT INTO `user`(first_name, last_name, email, `password`, created_at, updated_at) VALUES
+("Gabriel", "Rincón López", "gabrielrl2004@gmail.com", "$2a$12$SoHnhXiNQWRtjb/KGf90VubROVrW3T/jPBoILleD6oQ0PWxiASRLS", CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Inserción de los roles en los usuarios administradores
 INSERT INTO user_role(role_id, user_id) VALUES 
