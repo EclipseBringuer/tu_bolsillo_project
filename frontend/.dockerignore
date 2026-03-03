@@ -1,0 +1,16 @@
+# Archivos y directorios generados por npm/node
+node_modules/
+npm-debug.log
+
+# Directorios de compilación/cache de Angular
+dist/
+.angular/
+tmp/
+
+# Archivos de control de versiones y IDEs
+.git
+.gitignore
+.vscode/
+
+# Archivos de entorno local que no deben estar en el contenedor
+.env

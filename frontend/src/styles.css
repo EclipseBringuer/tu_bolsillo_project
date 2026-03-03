@@ -1,1 +1,35 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estilos globales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Variables */
+:root {
+  /* Fuentes */
+  --title-font: 'system-ui';
+  --regular-text-font: '';
+
+  /* Colores */
+  --black: #;
+  --purple: #794cd2;
+  --light-purple: #ddd0f7;
+  --gray: #677283;
+  --light-white: #ffffff;
+  --dark-white: #f8f8f8;
+
+  /* Valores */
+  --border-radius: 8px;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos generales */
+body {
+  font-family: var(--regular-text-font);
+  background-color: var(--background-color);
+}
+
+a {
+  text-decoration: none;
+}

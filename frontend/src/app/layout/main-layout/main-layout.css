@@ -1,0 +1,26 @@
+/* Estilos del contenedor de la vista dashboard */
+div.dashboard-layout {
+  display: grid;
+  grid-template-columns: 325px 1fr;
+  height: 100vh;
+
+  aside.sidebar,
+  main {
+    height: 100%;
+  }
+}
+
+main {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+section.content-area {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

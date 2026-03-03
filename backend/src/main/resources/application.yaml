@@ -24,10 +24,9 @@ springdoc:
 
 # Configuración de JSON Web Token
 jwt:
-  secret: Yn8ycCmd0csc6RbloLo2URZy8Unu2Mtk1/KW4/0dtcQ=
+  secret: ${JWT_SECRET}
   refresh:
     expiration: 604800000 # 7 días
   access:
     expiration: 3600000 # 1 hora = 3600 segundos * 1000 milisegundos/segundo
-
 

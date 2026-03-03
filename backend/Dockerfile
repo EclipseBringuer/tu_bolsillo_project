@@ -1,4 +1,6 @@
-# 1. Etapa de COMPILACIÓN: Usa una imagen con JDK completo y Maven/Gradle
+# ------------------------------------
+# STAGE 1: COMPILACIÓN (BUILD) con JDK y Maven
+# ------------------------------------
 FROM eclipse-temurin:21-jdk-alpine AS build
 
 WORKDIR /app
@@ -17,13 +19,15 @@ RUN chmod +x mvnw
 # Compila el proyecto y genera el JAR
 RUN ./mvnw clean package -DskipTests
 
-# 2. Etapa de EJECUCIÓN: Usa una imagen ligera (JRE solamente)
+# ------------------------------------
+# STAGE 2: SERVICIO (PRODUCTION) con JRE
+# ------------------------------------
 FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
 # Copia el JAR generado en la etapa de compilación
-COPY --from=build /app/target/tubolsillo-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/tubolsillo-1.0.0.jar app.jar
 
 EXPOSE 8080
 

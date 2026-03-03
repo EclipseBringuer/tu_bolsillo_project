@@ -28,7 +28,7 @@ public final class ApiRoutes {
      * Documentación
      */
     public static final String DOCUMENTATION = API + "/docs/**";
-    public static final String API_DOCS = "/v3/api-docs/**";
+    public static final String API_DOCS = API + "/docs/api-docs/**";
     public static final String SWAGGER = API + "/swagger-ui/**";
 
     /**
