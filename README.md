@@ -4,7 +4,7 @@ Se trata de una aplicación web llamada **TuBolsillo**, la cual permite al usuar
 
 La idea de este proyecto surge de la necesidad de monitorear mis propios movimientos bancarios así como para practicar todo un stack tecnológico.
 
-El proyecto consta principalmente de tres partes:
+El proyecto consta principalmente de cuatro partes:
 
 - **Base de datos:** Usando MySQL como SGBD.
 
@@ -12,7 +12,7 @@ El proyecto consta principalmente de tres partes:
 
 - **Backend:** Desarrollado con el framework Spring Boot 3.5.7 para Java 21.
 
-- **Frontend:** Desarrollado con Angular 20.
+- **Frontend:** Desarrollado con Angular 20.3.9.
 
 Además, para el despliegue y portabilidad de la aplicación estoy usando Docker y Docker compose.
 
