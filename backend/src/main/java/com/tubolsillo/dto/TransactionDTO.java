@@ -1,5 +1,6 @@
 package com.tubolsillo.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -13,7 +14,7 @@ import java.time.LocalDate;
  */
 public record TransactionDTO(
         Long id,
-        Double amount,
+        BigDecimal amount,
         String description,
         LocalDate transactionDate,
         CategoryDTO category) {
