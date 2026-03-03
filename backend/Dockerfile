@@ -27,7 +27,7 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 # Copia el JAR generado en la etapa de compilación
-COPY --from=build /app/target/tubolsillo-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/tubolsillo-1.0.0.jar app.jar
 
 EXPOSE 8080
 
