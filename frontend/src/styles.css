@@ -1,20 +1,23 @@
 /* Estilos globales */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 /* Variables */
 :root {
   /* Fuentes */
-  --title-font: '';
+  --title-font: 'system-ui';
   --regular-text-font: '';
 
   /* Colores */
-  --primary-color: '';
-  --secondary-color: '';
-  --background-color: '';
+  --black: #;
+  --purple: #794cd2;
+  --light-purple: #ddd0f7;
+  --gray: #677283;
+  --light-white: #ffffff;
+  --dark-white: #f8f8f8;
 
   /* Valores */
   --border-radius: 8px;
